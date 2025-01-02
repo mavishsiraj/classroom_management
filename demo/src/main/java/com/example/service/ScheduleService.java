@@ -2,7 +2,6 @@ package com.example.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.model.Classroom;
 import com.example.demo.model.Schedule;
 import com.example.demo.model.Student;
@@ -10,6 +9,8 @@ import com.example.repository.ClassroomRepository;
 import com.example.repository.ScheduleRepository;
 import com.example.repository.StudentRepository;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -31,11 +32,37 @@ public class ScheduleService {
 
     // Create a new schedule
     public Schedule createSchedule(Schedule schedule) {
-        // Validate schedule data (e.g., check for null fields, conflicting times, etc.)
         if (schedule.getClassroom() == null) {
             throw new RuntimeException("Classroom cannot be null for a schedule");
         }
         return scheduleRepository.save(schedule);
+    }
+
+    // Get schedule by ID
+    public Schedule getScheduleById(Long scheduleId) {
+        return scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new RuntimeException("Schedule not found"));
+    }
+
+    // Update a schedule
+    public Schedule updateSchedule(Long scheduleId, Schedule updatedSchedule) {
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new RuntimeException("Schedule not found"));
+
+        schedule.setClassroom(updatedSchedule.getClassroom());
+        schedule.setStartTime(updatedSchedule.getStartTime());
+        schedule.setEndTime(updatedSchedule.getEndTime());
+        schedule.setStudents(updatedSchedule.getStudents()); // Ensure this method exists in your Schedule class
+
+        return scheduleRepository.save(schedule);
+    }
+
+    // Delete a schedule
+    public void deleteSchedule(Long scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new RuntimeException("Schedule not found"));
+
+        scheduleRepository.delete(schedule);
     }
 
     // Assign a classroom to a schedule
@@ -46,7 +73,6 @@ public class ScheduleService {
         Classroom classroom = classroomRepository.findById(classroomId)
                 .orElseThrow(() -> new RuntimeException("Classroom not found"));
 
-        // Check classroom availability
         if (classroom.getAvailableSeats() <= 0) {
             throw new RuntimeException("Classroom is full");
         }
@@ -63,12 +89,10 @@ public class ScheduleService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
-        // Check if the student is already enrolled
         if (schedule.getStudents().contains(student)) {
             throw new RuntimeException("Student is already enrolled in this schedule");
         }
 
-        // Ensure classroom capacity is not exceeded
         Classroom classroom = schedule.getClassroom();
         if (classroom != null && classroom.getAvailableSeats() <= 0) {
             throw new RuntimeException("No available seats in the classroom");
@@ -76,7 +100,6 @@ public class ScheduleService {
 
         schedule.getStudents().add(student);
 
-        // Decrease available seats in the classroom
         if (classroom != null) {
             classroom.setAvailableSeats(classroom.getAvailableSeats() - 1);
             classroomRepository.save(classroom);
@@ -97,7 +120,6 @@ public class ScheduleService {
             throw new RuntimeException("Student was not enrolled in this schedule");
         }
 
-        // Increase available seats in the classroom
         Classroom classroom = schedule.getClassroom();
         if (classroom != null) {
             classroom.setAvailableSeats(classroom.getAvailableSeats() + 1);
@@ -121,6 +143,16 @@ public class ScheduleService {
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
         return scheduleRepository.findByStudentsContains(student);
+    }
+
+    // Get schedules by date
+    public List<Schedule> getSchedulesByDate(String date) {
+        // Convert String to LocalDateTime using a formatter
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");  // Adjust the pattern to match your date format
+        LocalDateTime localDateTime = LocalDateTime.parse(date, formatter);
+
+        // Find schedules by LocalDateTime
+        return scheduleRepository.findByStartTime(localDateTime);
     }
 
     // Assign seats to a schedule (for classroom management)

@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -33,6 +34,9 @@ public class Schedule {
 
     @Column(nullable = false)
     private LocalDateTime endTime;
+
+    @OneToMany(mappedBy = "schedule")
+    private List<Student> students;  // Added list of students
 
     // Getters and Setters
 
@@ -76,8 +80,11 @@ public class Schedule {
         this.endTime = endTime;
     }
 
-    // New function to get students from the SchoolClass
     public List<Student> getStudents() {
-        return schoolClass.getStudents();  // Assuming that SchoolClass has a getStudents method
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 }
