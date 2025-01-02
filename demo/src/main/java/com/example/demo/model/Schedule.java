@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -73,5 +74,10 @@ public class Schedule {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    // New function to get students from the SchoolClass
+    public List<Student> getStudents() {
+        return schoolClass.getStudents();  // Assuming that SchoolClass has a getStudents method
     }
 }

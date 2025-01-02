@@ -1,11 +1,7 @@
 package com.example.demo.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "classes")
@@ -21,6 +17,10 @@ public class SchoolClass {
     private String teacherName;
 
     private String subjectName;
+
+    // One-to-many relationship with Student
+    @OneToMany(mappedBy = "schoolClass")
+    private List<Student> students;
 
     // Getters and Setters
 
@@ -54,5 +54,14 @@ public class SchoolClass {
 
     public void setSubjectName(String subjectName) {
         this.subjectName = subjectName;
+    }
+
+    // Getter and Setter for students
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 }
