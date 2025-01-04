@@ -1,7 +1,12 @@
-package com.example.service;
+package com.example.demo.service;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.example.demo.model.Classroom;
 import com.example.demo.model.Schedule;
 import com.example.demo.model.Student;
@@ -9,12 +14,8 @@ import com.example.repository.ClassroomRepository;
 import com.example.repository.ScheduleRepository;
 import com.example.repository.StudentRepository;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
 @Service
-public class ScheduleService {
+public class ApplicationService {
 
     @Autowired
     private ScheduleRepository scheduleRepository;

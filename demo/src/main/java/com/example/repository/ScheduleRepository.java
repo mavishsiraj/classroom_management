@@ -1,15 +1,16 @@
 package com.example.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import com.example.demo.model.Schedule;
-import com.example.demo.model.Student;
-import com.example.demo.model.Classroom;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.model.Classroom;
+import com.example.demo.model.Schedule;
+import com.example.demo.model.Student;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
