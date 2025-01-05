@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.model.Classroom;
-import com.example.demo.model.Schedule;
-import com.example.demo.model.Student;
+import com.example.model.Classroom;
+import com.example.model.Schedule;
+import com.example.model.Student;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
