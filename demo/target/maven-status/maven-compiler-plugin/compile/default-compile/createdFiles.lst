@@ -1,0 +1,12 @@
+com\example\model\Schedule.class
+com\example\model\SeatAssignment.class
+com\example\controller\ScheduleController.class
+com\example\repository\ScheduleRepository.class
+com\example\repository\StudentRepository.class
+com\example\model\SchoolClass.class
+com\example\repository\SeatAssignmentRepository.class
+com\example\DemoApplication.class
+com\example\model\Classroom.class
+com\example\service\ApplicationService.class
+com\example\model\Student.class
+com\example\repository\ClassroomRepository.class
